@@ -13,6 +13,7 @@ class CPlayer
 
 	public:
 		void SetName(Sqrat::string newName);
+                void SetPlayer3DArrowForPlayer(CPlayer* targetPlayer, bool enable);
 		void SetPosition( Vector pos );
 		void SetHealth( float health );
 		void SetArmour( float armour );
@@ -134,6 +135,7 @@ class CPlayer
 		void SetDrunkLevel(int visuals, int handling);
 		bool RedirectPlayerToServer(const char* szIP, unsigned int usPort, const char* szNickname, const char* szServerPass, const char* szUserPass);
 		void RequestModuleList(void);
+                bool GetPlayer3DArrowForPlayer(CPlayer* targetPlayer);
 
 	public:
 		int nPlayerId;
