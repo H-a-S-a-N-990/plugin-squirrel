@@ -206,6 +206,23 @@ CPlayer * CPlayer::GetSpectateTarget()
 	return pCore->RetrievePlayer(target);
 }
 
+void CPlayer::SetPlayer3DArrowForPlayer(CPlayer* targetPlayer, bool enable)
+{
+    if (targetPlayer != NULL)
+    {
+        functions->SetPlayer3DArrowForPlayer(this->nPlayerId, targetPlayer->nPlayerId, enable);
+    }
+}
+
+bool CPlayer::GetPlayer3DArrowForPlayer(CPlayer* targetPlayer)
+{
+    if (targetPlayer != NULL)
+    {
+        return Boolify(functions->GetPlayer3DArrowForPlayer(this->nPlayerId, targetPlayer->nPlayerId));
+    }
+    return false;
+}
+
 EntityVector CPlayer::GetSpeed()
 {
 	float x, y, z;
@@ -329,6 +346,7 @@ void RegisterPlayer()
 	// Read-write properties
 	c
 		.Prop(_SC("Admin"), &CPlayer::GetAdmin, &CPlayer::SetAdmin)
+		.Prop(_SC("CanAttack"), &CPlayer::GetCanAttack, &CPlayer::SetCanAttack)
 		.Prop(_SC("Angle"), &CPlayer::GetHeading, &CPlayer::SetHeading)
 		.Prop(_SC("Armor"), &CPlayer::GetArmour, &CPlayer::SetArmour)
 		.Prop(_SC("Armour"), &CPlayer::GetArmour, &CPlayer::SetArmour)
@@ -411,26 +429,28 @@ void RegisterPlayer()
 		.Func(_SC("GiveWeapon"), &CPlayer::GiveWeapon)
 		.Func(_SC("Kick"), &CPlayer::Kick)
 		.Func(_SC("PlaySound"), &CPlayer::PlaySound)
-		.Func(_SC("Redirect"), &CPlayer::RedirectPlayerToServer )
-		.Func(_SC("RemoveWeapon"), &CPlayer::RemoveWeapon )
-		.Func(_SC("RemoveMarker"), &CPlayer::RemoveMarker )
-		.Func(_SC("RestoreCamera"), &CPlayer::RestoreCamera )
-		.Func(_SC("Select"), &CPlayer::Select )
-		.Func(_SC("SetAlpha"), &CPlayer::SetAlpha )
-		.Overload(_SC("SetAnim"), &CPlayer::Animation )
-		.Overload(_SC("SetAnim"), &CPlayer::CompatAnimation )
-		.Func(_SC("SetCameraPos"), &CPlayer::SetCameraPos )
-		.Func(_SC("SetDrunkLevel"), &CPlayer::SetDrunkLevel )
-		.Func(_SC("SetInterior"), &CPlayer::SetInterior )
-		.Func(_SC("SetMarker"), &CPlayer::SetMarker )
-		.Func(_SC("SetWantedLevel"), &CPlayer::SetWantedLevel )
-		.Func(_SC("SetWeapon"), &CPlayer::SetWeapon )
-		.Func(_SC("Spawn"), &CPlayer::Spawn )
-		.Func(_SC("StreamedToPlayer"), &CPlayer::StreamedToPlayer )
-		.Func(_SC("PutInVehicleSlot"), &CPlayer::SetVehicleSlot )
-		.Func(_SC("RequestModuleList"), &CPlayer::RequestModuleList);
+		.Func(_SC("Redirect"), &CPlayer::RedirectPlayerToServer)
+		.Func(_SC("RemoveWeapon"), &CPlayer::RemoveWeapon)
+		.Func(_SC("RemoveMarker"), &CPlayer::RemoveMarker)
+		.Func(_SC("RestoreCamera"), &CPlayer::RestoreCamera)
+		.Func(_SC("Select"), &CPlayer::Select)
+		.Func(_SC("SetAlpha"), &CPlayer::SetAlpha)
+		.Overload(_SC("SetAnim"), &CPlayer::Animation)
+		.Overload(_SC("SetAnim"), &CPlayer::CompatAnimation)
+		.Func(_SC("SetCameraPos"), &CPlayer::SetCameraPos)
+		.Func(_SC("SetDrunkLevel"), &CPlayer::SetDrunkLevel)
+		.Func(_SC("SetInterior"), &CPlayer::SetInterior)
+		.Func(_SC("SetMarker"), &CPlayer::SetMarker)
+		.Func(_SC("SetWantedLevel"), &CPlayer::SetWantedLevel)
+		.Func(_SC("SetWeapon"), &CPlayer::SetWeapon)
+		.Func(_SC("Spawn"), &CPlayer::Spawn)
+		.Func(_SC("StreamedToPlayer"), &CPlayer::StreamedToPlayer)
+		.Func(_SC("PutInVehicleSlot"), &CPlayer::SetVehicleSlot)
+		.Func(_SC("RequestModuleList"), &CPlayer::RequestModuleList)
+		// NEW: 3D Arrow Functions
+		.Func(_SC("SetPlayer3DArrowForPlayer"), &CPlayer::SetPlayer3DArrowForPlayer)
+		.Func(_SC("GetPlayer3DArrowForPlayer"), &CPlayer::GetPlayer3DArrowForPlayer)
 
 	c.GlobalFunc(_SC("_tostring"), &PlayerToString);
 	RootTable(v).Bind( _SC("CPlayer"), c );
 }
-
